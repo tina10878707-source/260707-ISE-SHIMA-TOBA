@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>伊勢志摩 4天3夜・純淨極致放鬆之旅</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3ECDF;
+    --paper-2:#EFE6D5;
+    --card:#FBF7EF;
+    --ink:#23262B;
+    --ink-soft:#4A4F57;
+    --ink-faint:#7C7A72;
+    --indigo:#1C3A57;
+    --indigo-2:#2C5677;
+    --indigo-soft:#E4EBF1;
+    --vermilion:#B5402E;
+    --vermilion-soft:#F2E2DC;
+    --brass:#A07C3F;
+    --line:rgba(35,38,43,.14);
+    --line-2:rgba(35,38,43,.28);
+    --warn-bg:#FBEEDD;
+    --warn-edge:#C9882E;
+    --ok:#3B6D45;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Noto Sans TC",sans-serif;line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(28,58,87,.04), transparent 42%),
+      radial-gradient(circle at 88% 92%, rgba(181,64,46,.04), transparent 40%);
+  }
+  .serif{font-family:"Noto Serif TC",serif;}
+  .min{font-family:"Shippori Mincho","Noto Serif TC",serif;}
+  a{color:var(--indigo-2);text-underline-offset:3px;}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:1000;background:rgba(243,236,223,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .nav-in{max-width:1080px;margin:0 auto;padding:.55rem 1.25rem;display:flex;
+    align-items:center;gap:.4rem;flex-wrap:wrap;}
+  .nav-brand{font-family:"Shippori Mincho",serif;font-weight:700;color:var(--indigo);
+    letter-spacing:.06em;margin-right:.5rem;font-size:.95rem;}
+  nav a{display:inline-block;padding:.25rem .6rem;border-radius:6px;text-decoration:none;
+    color:var(--ink-soft);font-size:.82rem;font-weight:500;}
+  nav a:hover{background:var(--indigo-soft);color:var(--indigo);}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 1.25rem;}
+  section{padding:2.6rem 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+
+  /* hero */
+  .hero{position:relative;padding:3.4rem 0 2.6rem;overflow:hidden;}
+  .hero .kicker{font-family:"Shippori Mincho",serif;letter-spacing:.5em;
+    color:var(--vermilion);font-size:.72rem;text-transform:uppercase;margin:0 0 .9rem;}
+  .hero h1{font-family:"Noto Serif TC",serif;font-weight:700;line-height:1.25;
+    font-size:clamp(2rem,5.2vw,3.3rem);margin:0;color:var(--indigo);}
+  .hero h1 .accent{color:var(--vermilion);}
+  .hero .lede{max-width:60ch;color:var(--ink-soft);margin:1.1rem 0 0;font-size:1.02rem;}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:1.4rem 2.4rem;margin-top:1.8rem;
+    padding-top:1.5rem;border-top:1px solid var(--line);}
+  .hmeta-item .lab{font-size:.7rem;letter-spacing:.18em;color:var(--ink-faint);
+    text-transform:uppercase;margin:0 0 .25rem;}
+  .hmeta-item .val{font-family:"Shippori Mincho",serif;font-weight:700;color:var(--ink);
+    font-size:1.05rem;}
+  .hmeta-item .sub{font-size:.82rem;color:var(--ink-soft);}
+
+  .seal{position:absolute;top:2.2rem;right:1.4rem;width:84px;height:84px;border-radius:50%;
+    border:2px solid var(--vermilion);color:var(--vermilion);display:flex;align-items:center;
+    justify-content:center;text-align:center;font-family:"Shippori Mincho",serif;font-weight:700;
+    font-size:.82rem;line-height:1.25;letter-spacing:.05em;opacity:.85;transform:rotate(-7deg);}
+  @media(max-width:640px){.seal{display:none;}}
+
+  h2.sec{font-family:"Noto Serif TC",serif;font-weight:600;font-size:1.65rem;color:var(--indigo);
+    margin:0 0 .35rem;display:flex;align-items:baseline;gap:.6rem;}
+  h2.sec .no{font-family:"Shippori Mincho",serif;color:var(--vermilion);font-size:1.05rem;
+    letter-spacing:.1em;}
+  .sec-desc{color:var(--ink-soft);margin:.2rem 0 1.6rem;max-width:64ch;font-size:.95rem;}
+
+  /* key cards */
+  .keycards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;}
+  .kc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.3rem 1.4rem;
+    border-top:3px solid var(--indigo);}
+  .kc.vrm{border-top-color:var(--vermilion);}
+  .kc h3{margin:.1rem 0 .5rem;font-family:"Noto Serif TC",serif;font-size:1.15rem;color:var(--indigo);}
+  .kc.vrm h3{color:var(--vermilion);}
+  .kc .price{font-family:"Shippori Mincho",serif;font-weight:700;font-size:1.4rem;color:var(--ink);}
+  .kc ul{margin:.7rem 0 0;padding-left:1.1rem;font-size:.9rem;color:var(--ink-soft);}
+  .kc li{margin-bottom:.35rem;}
+
+  /* warning banner */
+  .warn{background:var(--warn-bg);border:1px solid var(--warn-edge);border-left:5px solid var(--warn-edge);
+    border-radius:10px;padding:1.1rem 1.3rem;margin-top:1.2rem;}
+  .warn h4{margin:0 0 .5rem;color:#8a5a12;font-family:"Noto Serif TC",serif;font-size:1.05rem;
+    display:flex;align-items:center;gap:.45rem;}
+  .warn p{margin:.3rem 0;font-size:.92rem;color:#5f4413;}
+  .warn .dt{font-family:"Shippori Mincho",serif;font-weight:700;}
+
+  /* map */
+  #map{height:460px;border-radius:12px;border:1px solid var(--line-2);box-shadow:0 1px 0 rgba(0,0,0,.03);}
+  .map-legend{display:flex;flex-wrap:wrap;gap:1.1rem;margin-top:.9rem;font-size:.85rem;color:var(--ink-soft);}
+  .leg{display:flex;align-items:center;gap:.45rem;}
+  .dot{width:13px;height:13px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line-2);}
+  .leaflet-popup-content{font-family:"Noto Sans TC",sans-serif;font-size:.85rem;margin:.7rem .9rem;}
+  .leaflet-popup-content b{font-family:"Noto Serif TC",serif;color:var(--indigo);font-size:.95rem;}
+  .pp-note{color:var(--ink-soft);display:block;margin:.3rem 0;}
+  .pp-link{display:inline-block;margin-top:.2rem;font-size:.82rem;}
+
+  /* day itinerary */
+  .day{margin-bottom:1.1rem;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);}
+  .day-head{display:flex;align-items:center;gap:1rem;padding:1rem 1.3rem;cursor:pointer;user-select:none;
+    background:var(--card);transition:background .15s;}
+  .day-head:hover{background:#F6EFE2;}
+  .day-badge{flex:none;width:46px;height:46px;border-radius:10px;color:#fff;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;font-family:"Shippori Mincho",serif;line-height:1;}
+  .day-badge .d{font-size:.6rem;letter-spacing:.06em;opacity:.85;}
+  .day-badge .n{font-size:1.4rem;font-weight:700;}
+  .day-title{flex:1;}
+  .day-title .dt-date{font-family:"Shippori Mincho",serif;font-weight:700;color:var(--ink);font-size:1.02rem;}
+  .day-title .dt-sub{font-size:.85rem;color:var(--ink-soft);}
+  .day-title .thu{color:var(--vermilion);font-weight:700;}
+  .chev{color:var(--ink-faint);transition:transform .25s;font-size:1.1rem;}
+  .day.open .chev{transform:rotate(180deg);}
+  .day-body{display:none;padding:.3rem 1.3rem 1.3rem;}
+  .day.open .day-body{display:block;}
+  .tl{list-style:none;margin:0;padding:0;border-left:2px solid var(--line-2);margin-left:.6rem;}
+  .tl li{position:relative;padding:.55rem 0 .55rem 1.4rem;}
+  .tl li::before{content:"";position:absolute;left:-7px;top:1.05rem;width:11px;height:11px;border-radius:50%;
+    background:var(--card);border:2px solid var(--indigo-2);}
+  .tl li.eat::before{border-color:var(--vermilion);}
+  .tl .tm{font-family:"Shippori Mincho",serif;font-weight:700;color:var(--indigo);font-size:.9rem;}
+  .tl .ti2{font-weight:500;}
+  .tl .ds{color:var(--ink-soft);font-size:.9rem;}
+  .tag{display:inline-block;font-size:.68rem;padding:.08rem .45rem;border-radius:20px;margin-left:.4rem;
+    vertical-align:middle;font-weight:500;}
+  .tag.food{background:var(--vermilion-soft);color:var(--vermilion);}
+  .tag.move{background:var(--indigo-soft);color:var(--indigo-2);}
+  .tag.stay{background:#E7EFE3;color:var(--ok);}
+  .verify{color:var(--brass);font-size:.82rem;font-style:italic;}
+
+  /* checklist */
+  .disc{background:var(--indigo-soft);border-radius:10px;padding:.9rem 1.1rem;font-size:.86rem;
+    color:var(--indigo);margin-bottom:1.4rem;border:1px solid rgba(28,58,87,.18);}
+  .todo{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem 1.2rem;margin-bottom:.8rem;
+    display:flex;gap:.9rem;align-items:flex-start;transition:opacity .2s;}
+  .todo.done{opacity:.55;}
+  .todo.done .td-title{text-decoration:line-through;}
+  .todo input[type=checkbox]{margin-top:.35rem;width:20px;height:20px;flex:none;accent-color:var(--indigo);cursor:pointer;}
+  .td-main{flex:1;}
+  .td-title{font-family:"Noto Serif TC",serif;font-weight:600;font-size:1.05rem;color:var(--ink);}
+  .td-star{color:var(--vermilion);}
+  .td-detail{font-size:.9rem;color:var(--ink-soft);margin:.3rem 0 .55rem;}
+  .td-detail .warninline{color:#9a5a12;font-weight:500;}
+  .td-links{display:flex;flex-wrap:wrap;gap:.5rem;}
+  .lk{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;text-decoration:none;
+    border:1px solid var(--line-2);padding:.28rem .6rem;border-radius:7px;color:var(--indigo-2);background:#fff;}
+  .lk:hover{background:var(--indigo-soft);}
+  .lk.v{border-style:dashed;color:var(--brass);}
+  .lk .ph{font-size:.78rem;}
+
+  /* expense tracker */
+  .exp-grid{display:grid;grid-template-columns:1.4fr .8fr .9fr 1.2fr auto;gap:.6rem;align-items:end;}
+  @media(max-width:760px){.exp-grid{grid-template-columns:1fr 1fr;}}
+  .fld label{display:block;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);margin-bottom:.25rem;text-transform:uppercase;}
+  .fld input,.fld select{width:100%;padding:.5rem .55rem;border:1px solid var(--line-2);border-radius:8px;
+    font-family:inherit;font-size:.92rem;background:#fff;color:var(--ink);}
+  .fld input:focus,.fld select:focus{outline:none;border-color:var(--indigo-2);box-shadow:0 0 0 3px rgba(44,86,119,.12);}
+  .btn{font-family:"Noto Sans TC",sans-serif;font-weight:500;cursor:pointer;border-radius:8px;
+    padding:.55rem 1rem;font-size:.9rem;border:1px solid var(--indigo);background:var(--indigo);color:#fff;transition:.15s;}
+  .btn:hover{background:var(--indigo-2);}
+  .btn.ghost{background:#fff;color:var(--indigo);}
+  .btn.ghost:hover{background:var(--indigo-soft);}
+  .btn.sm{padding:.3rem .6rem;font-size:.8rem;}
+  .rate-row{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin:1.2rem 0;
+    background:var(--warn-bg);border:1px solid var(--warn-edge);border-radius:9px;padding:.7rem 1rem;}
+  .rate-row label{font-size:.9rem;color:#7a4f12;font-weight:500;}
+  .rate-row input{width:90px;padding:.35rem .5rem;border:1px solid var(--warn-edge);border-radius:7px;font-family:"Shippori Mincho",serif;font-weight:700;}
+  .rate-row .hint{font-size:.78rem;color:#8a5a12;}
+
+  table.exp{width:100%;border-collapse:collapse;margin-top:1.2rem;font-size:.9rem;}
+  table.exp th{text-align:left;font-size:.72rem;letter-spacing:.05em;color:var(--ink-faint);
+    text-transform:uppercase;padding:.5rem .55rem;border-bottom:1px solid var(--line-2);font-weight:500;}
+  table.exp td{padding:.55rem .55rem;border-bottom:1px solid var(--line);vertical-align:middle;}
+  table.exp tr:hover td{background:#F7F0E3;}
+  .cur-pill{font-size:.7rem;font-weight:700;padding:.1rem .45rem;border-radius:20px;font-family:"Shippori Mincho",serif;}
+  .cur-twd{background:var(--indigo-soft);color:var(--indigo);}
+  .cur-jpy{background:var(--vermilion-soft);color:var(--vermilion);}
+  .num{font-family:"Shippori Mincho",serif;font-weight:700;text-align:right;white-space:nowrap;}
+  .del{cursor:pointer;color:var(--ink-faint);border:none;background:none;font-size:1.1rem;line-height:1;}
+  .del:hover{color:var(--vermilion);}
+  .empty{color:var(--ink-faint);font-style:italic;text-align:center;padding:1.4rem;}
+
+  .totals{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.8rem;margin-top:1.4rem;}
+  .tot{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:1rem 1.2rem;border-top:3px solid var(--line-2);}
+  .tot.twd{border-top-color:var(--indigo);}
+  .tot.jpy{border-top-color:var(--vermilion);}
+  .tot.sum{border-top-color:var(--brass);background:#FBF3E5;}
+  .tot .lab{font-size:.74rem;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;}
+  .tot .v{font-family:"Shippori Mincho",serif;font-weight:700;font-size:1.55rem;color:var(--ink);margin-top:.2rem;}
+  .tot .v small{font-size:.85rem;color:var(--ink-soft);font-weight:400;}
+
+  .chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.4rem 0 1rem;}
+  .chip{font-size:.78rem;border:1px dashed var(--line-2);background:#fff;color:var(--ink-soft);
+    padding:.3rem .6rem;border-radius:20px;cursor:pointer;}
+  .chip:hover{border-color:var(--indigo-2);color:var(--indigo);background:var(--indigo-soft);}
+
+  .io-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem;align-items:center;}
+  .savenote{font-size:.78rem;color:var(--ink-faint);margin-top:.6rem;}
+
+  /* 費用編列表 */
+  .budget-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin-top:.6rem;}
+  table.bud{width:100%;border-collapse:collapse;font-size:.88rem;min-width:780px;}
+  table.bud th{text-align:left;font-size:.72rem;letter-spacing:.04em;color:var(--ink-faint);text-transform:uppercase;padding:.6rem .6rem;border-bottom:1px solid var(--line-2);font-weight:500;background:var(--card);}
+  table.bud td{padding:.5rem .6rem;border-bottom:1px solid var(--line);vertical-align:top;background:var(--card);}
+  table.bud tr:hover td{background:#F7F0E3;}
+  table.bud .it{font-weight:500;color:var(--ink);min-width:150px;}
+  table.bud .dt2{color:var(--ink-soft);white-space:nowrap;}
+  table.bud .nt{color:var(--ink-soft);font-size:.82rem;line-height:1.55;min-width:210px;}
+  table.bud .nt .warninline{color:#9a5a12;font-weight:500;}
+  .cell-num{width:92px;text-align:right;padding:.35rem .4rem;border:1px solid var(--line);border-radius:6px;font-family:"Shippori Mincho",serif;font-weight:700;background:#fff;color:var(--ink);}
+  .cell-num:focus{outline:none;border-color:var(--indigo-2);box-shadow:0 0 0 3px rgba(44,86,119,.12);}
+  table.bud tr.est td{background:#FBF6EC;}
+  .budlink{display:inline-block;font-size:.78rem;text-decoration:none;border:1px solid var(--line-2);padding:.2rem .5rem;border-radius:6px;color:var(--indigo-2);background:#fff;white-space:nowrap;}
+  .budlink:hover{background:var(--indigo-soft);}
+  .addrow{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0;align-items:center;}
+  .addrow input{padding:.5rem .55rem;border:1px solid var(--line-2);border-radius:8px;font-family:inherit;font-size:.9rem;background:#fff;flex:1;min-width:110px;}
+  .addrow input:focus{outline:none;border-color:var(--indigo-2);}
+  .conv{font-size:.72rem;color:var(--ink-faint);margin-top:.15rem;font-family:"Shippori Mincho",serif;text-align:right;white-space:nowrap;}
+  .grand{display:flex;align-items:stretch;background:var(--indigo);color:#fff;border-radius:14px;padding:1.2rem 1.6rem;margin:.4rem 0 1.4rem;flex-wrap:wrap;}
+  .grand-item{flex:1;min-width:140px;}
+  .grand .glab{font-size:.72rem;letter-spacing:.1em;opacity:.82;text-transform:uppercase;}
+  .grand .gval{font-family:"Shippori Mincho",serif;font-weight:700;font-size:1.95rem;margin-top:.25rem;letter-spacing:.01em;}
+  .grand-div{width:1px;background:rgba(255,255,255,.25);margin:0 1.5rem;}
+  @media(max-width:520px){.grand-div{display:none;}.grand-item{flex:0 0 100%;}.grand-item+.grand-item{margin-top:.7rem;border-top:1px solid rgba(255,255,255,.2);padding-top:.7rem;}}
+  .bk{width:19px;height:19px;accent-color:var(--ok);cursor:pointer;}
+  table.bud tr.booked td:nth-child(2){color:var(--ok);}
+
+  footer{padding:2rem 0 3rem;text-align:center;color:var(--ink-faint);font-size:.82rem;}
+  footer .min{color:var(--indigo);font-size:.95rem;letter-spacing:.08em;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <span class="nav-brand">伊勢志摩 ・ 旅之栞</span>
+    <a href="#info">重點票券</a>
+    <a href="#alert">重要提醒</a>
+    <a href="#map">地圖</a>
+    <a href="#plan">行程</a>
+    <a href="#money">費用編列</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="seal">純淨<br>極致<br>放鬆</div>
+    <p class="kicker">Ise &middot; Shima &middot; 4 Days 3 Nights</p>
+    <h1>伊勢志摩<br><span class="accent">純淨・極致放鬆</span>之旅</h1>
+    <p class="lede">為一對追求溫泉、道地海鮮與慢活步調的旅伴設計。全程以近鐵超級護照「まわりゃんせ」串連，回程升級搭乘觀光特急 Shimakaze。以下行程僅為草稿框架，所有時間與店家狀態都可依你們的步調自由調整。</p>
+
+    <div class="hero-meta">
+      <div class="hmeta-item">
+        <p class="lab">日期</p>
+        <div class="val">7/7（二）— 7/10（五）</div>
+        <div class="sub">4 天 3 夜</div>
+      </div>
+      <div class="hmeta-item">
+        <p class="lab">去程</p>
+        <div class="val">華航 CI154</div>
+        <div class="sub">台北 07:30 → 名古屋 11:20</div>
+      </div>
+      <div class="hmeta-item">
+        <p class="lab">回程</p>
+        <div class="val">華航 CI155</div>
+        <div class="sub">名古屋 12:20 → 台北 14:30</div>
+      </div>
+      <div class="hmeta-item">
+        <p class="lab">住宿</p>
+        <div class="val">賢島 → 鳥羽 → 名古屋</div>
+        <div class="sub">寶生苑 / 鳥羽國際 / JR Gate Tower</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 重點票券 -->
+<section id="info">
+  <div class="wrap">
+    <h2 class="sec"><span class="no">壱</span>兩張關鍵票券</h2>
+    <p class="sec-desc">這趟行程的成本與順暢度，幾乎都靠這兩張票。價格與規則以文件內容整理，正式購買前的數字請以官方公告為準。</p>
+    <div class="keycards">
+      <div class="kc">
+        <h3>まわりゃんせ 超級護照</h3>
+        <div class="price">¥12,100 <span style="font-size:.8rem;color:var(--ink-faint)">／人・效期 4 天</span></div>
+        <ul>
+          <li>「松阪 ↔ 賢島」自由區間內特急指定席無限免費劃位（Day 2、Day 3 適用）。</li>
+          <li>免費兌換鳥羽水族館（原價 ¥2,800）與英虞灣西班牙遊覽船（原價 ¥1,800）門票。</li>
+          <li>內宮往返 Mie 交通巴士、定期船無限搭乘。</li>
+          <li>抵達近鐵名古屋站時於窗口購買即可，免事先配送。<span class="verify">建議自行確認最新售價與內容</span></li>
+        </ul>
+      </div>
+      <div class="kc vrm">
+        <h3>觀光特急 Shimakaze（志摩之風）</h3>
+        <div class="price">特急券約 ¥1,160 <span style="font-size:.8rem;color:var(--ink-faint)">／人（基本車資由護照涵蓋）</span></div>
+        <ul>
+          <li>Day 3 回程：鳥羽 16:10 → 近鐵名古屋 17:44。</li>
+          <li>真皮電動按摩座椅＋雙層景觀咖啡車廂。</li>
+          <li>需在<b>搭乘日 1 個月前同日</b>，日本時間 10:30（台灣 09:30）上近鐵線上系統搶票，只勾選「特急券のみ」。</li>
+          <li>名古屋線<b>週四常停駛</b>，而 7/9 正是週四，搶票前務必確認該班次是否運行。<span class="verify">若停駛可改搭 Ise-Shima Liner</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 重要提醒 -->
+<section id="alert">
+  <div class="wrap">
+    <h2 class="sec"><span class="no">弐</span>出發前務必確認</h2>
+    <p class="sec-desc">以下是我比對行程日期後發現、最容易出狀況的幾點。我無法替你確認當天實際狀況，請在訂購／出發前自行向店家與近鐵查證。</p>
+
+    <div class="warn">
+      <h4>⚠ Day 3（<span class="dt">7/9 星期四</span>）仍需確認：Shimakaze 班次</h4>
+      <p><b style="color:#9a5a12">海女小屋はちまんかまど：</b> 公開資訊雖顯示週四公休，但查詢預約系統 7/9（週四）13:15 有開放（75 分・¥17,600）。<b>目前尚未預約，記得去訂位</b>。</p>
+      <p><b>Shimakaze 名古屋線</b>：文件註明此線「通常於週四停駛」，暑假旺季有時改每日運行但不保證。搶票時若顯示停駛，請改搭 Ise-Shima Liner。<span class="dt">這點尚未驗證，請搶票前確認。</span></p>
+    </div>
+
+    <div class="warn" style="background:#EEF2F6;border-color:var(--indigo-2);border-left-color:var(--indigo-2);">
+      <h4 style="color:var(--indigo)">ℹ 其他建議自行確認的項目</h4>
+      <p style="color:var(--ink-soft)">各餐廳營業時間與價位、英虞灣遊覽船班次時刻、鳥羽水族館閉館時間、海女小屋是否提供鳥羽站接駁，皆可能隨季節調整，列為「建議自行確認」較保險。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 地圖 -->
+<section id="map-sec">
+  <div class="wrap">
+    <h2 class="sec"><span class="no">参</span>行程地圖</h2>
+    <p class="sec-desc">依每日行程用顏色標示。點擊地圖上的點可看備註與「在 Google 地圖開啟」連結。座標取自地圖資料，僅供定位參考。</p>
+    <div id="map"></div>
+    <div class="map-legend">
+      <span class="leg"><span class="dot" style="background:#2C5677"></span>Day 1 ・ 抵達與移動</span>
+      <span class="leg"><span class="dot" style="background:#1D9E75"></span>Day 2 ・ 遊船與神宮</span>
+      <span class="leg"><span class="dot" style="background:#B5402E"></span>Day 3 ・ 水族館與海女小屋</span>
+      <span class="leg"><span class="dot" style="background:#A07C3F"></span>住宿</span>
+    </div>
+  </div>
+</section>
+
+<!-- 行程 -->
+<section id="plan">
+  <div class="wrap">
+    <h2 class="sec"><span class="no">肆</span>每日行程</h2>
+    <p class="sec-desc">點標題可展開／收合。這只是草稿框架，留白處你們可以直接增刪、調整時間。</p>
+    <div id="days"></div>
+  </div>
+</section>
+
+<!-- 費用編列 -->
+<section id="money">
+  <div class="wrap">
+    <h2 class="sec"><span class="no">伍</span>費用編列</h2>
+
+    <div class="grand">
+      <div class="grand-item"><div class="glab">總體費用（估算）</div><div class="gval" id="t-grand">NT$ 0</div></div>
+      <div class="grand-div"></div>
+      <div class="grand-item"><div class="glab">平均每人（2 人）</div><div class="gval" id="t-per">NT$ 0</div></div>
+    </div>
+
+    <div class="rate-row">
+      <label>換算匯率　1 日圓 =</label>
+      <input id="rate" type="number" step="0.0001" value="0.2">
+      <label>台幣</label>
+      <span class="hint">台幣為以此匯率換算的估算值；機票為實際台幣金額。勾選「已訂」追蹤訂購進度（會自動保存）。</span>
+    </div>
+
+    <div class="budget-wrap">
+      <table class="bud">
+        <thead><tr>
+          <th style="text-align:center">已訂</th><th>項目</th><th>日期</th>
+          <th style="text-align:right">日幣 ¥</th><th style="text-align:right">台幣 NT$</th>
+          <th>連結</th><th>備註</th>
+        </tr></thead>
+        <tbody id="bud-body"></tbody>
+      </table>
+    </div>
+
+    <p class="savenote" id="savenote"></p>
+  </div>
+</section>
+
+<footer>
+  <p class="min">よい旅を ・ 祝旅途愉快</p>
+  <p>此手冊內容整理自你提供的行程文件，部分價格、時間與店家狀態屬「建議自行確認」項目。<br>離線也能開啟，但地圖圖磚需連網載入。</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* ---------- 儲存層：優先用 window.storage，否則記憶體 + 提示手動匯出 ---------- */
+const Store = {
+  ok: !!(window.storage && window.storage.get),
+  mem: {},
+  async get(k){
+    if(this.ok){ try{ const r = await window.storage.get(k); return r ? r.value : null; }catch(e){ return this.mem[k] ?? null; } }
+    return this.mem[k] ?? null;
+  },
+  async set(k,v){
+    this.mem[k]=v;
+    if(this.ok){ try{ await window.storage.set(k,v); }catch(e){} }
+  }
+};
+const K_RATE='iseshima:rate', K_BOOK='iseshima:booked';
+
+/* ---------- 地圖 ---------- */
+const places = [
+  {n:'中部國際機場 (Centrair)', lat:34.8573624, lng:136.8107557, day:1, note:'抵達後搭名鐵 μ-SKY 約 28 分到名古屋站。'},
+  {n:'近鐵名古屋站', lat:35.169158, lng:136.8843022, day:1, note:'大型置物櫃寄行李、午餐鰻魚飯、購買まわりゃんせ、劃位前往賢島。'},
+  {n:'賢島寶生苑', lat:34.3054114, lng:136.8216889, day:0, note:'7/7 住一晚。庭園露天溫泉「夕なぎの湯」可看英虞灣夕陽。'},
+  {n:'賢島港・西班牙遊覽船', lat:34.3074211, lng:136.8188752, day:2, note:'Day 2 早上憑護照免費換票，約 50 分鐘巡航。班次時間建議自行確認。'},
+  {n:'伊勢神宮・內宮', lat:34.4550157, lng:136.7251851, day:2, note:'參天古杉林蔭參道，留充裕時間慢走。'},
+  {n:'おかげ横丁（托福橫丁）', lat:34.4624294, lng:136.7228539, day:2, note:'豚捨可樂餅、岡田屋伊勢烏龍麵、赤福本店。'},
+  {n:'鳥羽站', lat:34.4867665, lng:136.8431256, day:3, note:'D2 上午在此辦行李當日配送到鳥羽國際飯店；D3 白天在此寄放行李，傍晚於此搭 Shimakaze 回名古屋。'},
+  {n:'鳥羽國際飯店（Toba Kokusai Hotel）', lat:34.4918341, lng:136.8418221, day:0, note:'7/8 住一晚（僅含早餐）。位於岬上，往返鳥羽站需搭飯店免費接駁巴士。'},
+  {n:'鳥羽水族館', lat:34.4815825, lng:136.8456926, day:3, note:'憑護照免費入場。儒艮（美人魚）、海獺、海獅表演。'},
+  {n:'海女小屋 はちまんかまど（相差）', lat:34.3883522, lng:136.8985553, day:3, note:'計畫 7/9 13:15・海女體驗 75 分コース ¥17,600（尚未預約，記得訂位）。現烤伊勢龍蝦、鮑魚。'},
+  {n:'JR Gate Tower Hotel', lat:35.1722069, lng:136.882618, day:1, note:'Day 3 入住，與名古屋站直結，出站搭電梯即達。'}
+];
+const dayColor = {0:'#A07C3F',1:'#2C5677',2:'#1D9E75',3:'#B5402E'};
+
+const map = L.map('map',{scrollWheelZoom:false}).setView([34.6,136.8],9);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:18, attribution:'&copy; OpenStreetMap'
+}).addTo(map);
+const bounds=[];
+places.forEach(p=>{
+  const c=dayColor[p.day];
+  const m=L.circleMarker([p.lat,p.lng],{radius:9,color:'#fff',weight:2,fillColor:c,fillOpacity:1}).addTo(map);
+  const g=`https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}`;
+  m.bindPopup(`<b>${p.n}</b><span class="pp-note">${p.note}</span><a class="pp-link" href="${g}" target="_blank" rel="noopener">在 Google 地圖開啟 ↗</a>`);
+  bounds.push([p.lat,p.lng]);
+});
+map.fitBounds(bounds,{padding:[40,40]});
+
+/* ---------- 行程資料 ---------- */
+const itinerary = [
+  {d:1,date:'7/7（二）',sub:'抵達名古屋 ─ 鰻魚飯午餐 ─ 直奔賢島寶生苑',color:'#2C5677',thu:false,items:[
+    {t:'11:20',ti:'抵達中部國際機場',ds:'入境後搭名鐵「μ-SKY」約 28 分直達近鐵名古屋站。',tag:'move'},
+    {t:'12:00',ti:'名古屋站・行李寄存',ds:'把兩個大行李鎖進站內大型置物櫃，空手出發。',tag:'move'},
+    {t:'12:15',ti:'鰻魚飯三吃午餐',ds:'名古屋站內「備長」或「まるや本店」碳烤鰻魚飯。通常現場排隊、不接受訂位（建議確認）。',tag:'food'},
+    {t:'14:00',ti:'領行李＋購買護照',ds:'近鐵窗口購買まわりゃんせ，並劃位名古屋→賢島特急。'},
+    {t:'14:30',ti:'近鐵特急前往賢島',ds:'搭 Ise-Shima Liner 等特急，車廂後方有行李架，約 2 小時。',tag:'move'},
+    {t:'17:00',ti:'入住賢島寶生苑',ds:'賢島站搭飯店免費接駁約 3 分。趕日落前泡庭園露天溫泉「夕なぎの湯」。',tag:'stay'},
+    {t:'19:00',ti:'志摩和風會席晚宴',ds:'伊勢龍蝦、鮑魚、A5 松阪牛。'}
+  ]},
+  {d:2,date:'7/8（三）',sub:'退房換飯店 ─ 鳥羽站寄送行李到飯店 ─ 伊勢神宮與托福橫丁 ─ 入住鳥羽國際',color:'#1D9E75',thu:false,items:[
+    {t:'08:30',ti:'早餐＋退房',ds:'今天換飯店（賢島→鳥羽），早餐後在寶生苑辦退房，帶著行李出發。'},
+    {t:'(選配)',ti:'英虞灣西班牙遊覽船',ds:'若想保留：步行 5 分至賢島港，憑護照免費換票、約 50 分巡航。但會較晚到鳥羽，務必確認行李寄送的當日截止時間是否來得及；想確保順暢也可略過。',tag:'move'},
+    {t:'上午',ti:'特急到鳥羽・行李當日配送到飯店',ds:'搭特急到鳥羽站（約 17 分），在鳥羽站行李寄送處辦理「當日配送到鳥羽國際飯店」，之後整天空手。⚠ 先確認：當日配送截止時間、是否含此飯店、費用。',tag:'move'},
+    {t:'10:30',ti:'前往伊勢神宮',ds:'鳥羽站憑護照免費劃位到宇治山田／五十鈴川，轉 Mie 交通巴士到內宮（合計約 30–40 分）。',tag:'move'},
+    {t:'12:00',ti:'托福橫丁美食午餐',ds:'豚捨可樂餅與碎肉餅、岡田屋月見伊勢烏龍麵、赤福本店赤福餅配焙茶。',tag:'food'},
+    {t:'13:30',ti:'伊勢神宮・內宮參拜',ds:'過宇治橋，慢走鵝卵石與古杉林蔭參道，時間充裕不趕。'},
+    {t:'晚餐',ti:'外食晚餐（飯店僅含早餐）',ds:'⚠ 托福橫丁店家多在 17:00 前後打烊，晚餐建議安排在伊勢市區或回到鳥羽站周邊；想省事也可改吃鳥羽國際飯店內餐廳（需另確認）。',tag:'food'},
+    {t:'傍晚',ti:'入住鳥羽國際（行李已先送達）',ds:'回鳥羽站搭飯店免費接駁巴士上山，行李白天已送達，直接入住放鬆、不必領取。接駁班次（尤其末班）建議先確認。',tag:'stay'}
+  ]},
+  {d:3,date:'7/9（四）',sub:'鳥羽國際退房 ─ 鳥羽水族館 ─ 海女小屋 ─ Shimakaze 回名古屋',color:'#B5402E',thu:true,items:[
+    {t:'08:30',ti:'早餐＋退房・接駁下山',ds:'在鳥羽國際享用早餐後退房，搭飯店免費接駁巴士下山到鳥羽站。已在鳥羽，不必再長途移動。',tag:'move'},
+    {t:'09:15',ti:'鳥羽站・行李寄存',ds:'兩件大行李寄放鳥羽站大型置物櫃或「手荷物預かり所」，空手出發。'},
+    {t:'09:30',ti:'鳥羽水族館（約 3.5 小時）',ds:'憑護照免費入場。儒艮（美人魚）、海獺、海獅表演、企鵝散步。步行 10 分或計程車 3 分。'},
+    {t:'13:15',ti:'海女小屋はちまんかまど 午餐',ds:'⚠ 尚未預約，記得訂位！計畫 7/9 13:15・海女體驗 75 分コース（B＋鮑魚 C/D，¥17,600）。現烤伊勢龍蝦、鮑魚、扇貝。水族館門口搭計程車約 25 分。',tag:'food'},
+    {t:'15:30',ti:'計程車返回鳥羽站領行李',ds:'回鳥羽站寄放處領回行李。',tag:'move'},
+    {t:'16:10',ti:'Shimakaze 回名古屋',ds:'鳥羽 16:10 → 名古屋 17:44。按摩座椅、咖啡車廂松阪牛咖哩飯。⚠ 名古屋線週四常停駛，務必先確認班次。',tag:'move'},
+    {t:'18:15',ti:'入住 JR Gate Tower Hotel',ds:'與名古屋站直結，出站搭電梯入住。',tag:'stay'},
+    {t:'晚餐',ti:'松阪牛壽喜燒',ds:'車站高空餐廳「肉の丸小」或「スギモト」等（建議事先訂位）。',tag:'food'}
+  ]},
+  {d:4,date:'7/10（五）',sub:'名古屋 ─ 飯店附近吃早餐 ─ 輕鬆返台',color:'#7C7A72',thu:false,items:[
+    {t:'07:30',ti:'飯店附近吃早餐',ds:'JR Gate Tower 純住宿不含早餐，到車站周邊吃。最快是飯店樓下 B1 的 Pront（7:00 開）；想體驗名古屋「モーニング」可去コメダ珈琲（點飲料附吐司＋蛋，7:00 開）或站內喫茶ボン・ヴォヤージュ。詳見下方推薦。',tag:'food'},
+    {t:'09:50',ti:'前往機場',ds:'拖行李搭電梯到名鐵站，搭 μ-SKY 直達中部國際機場（約 28 分）。',tag:'move'},
+    {t:'12:20',ti:'華航 CI155 返台',ds:'14:30 抵達台北。建議早餐早點吃、預留報到時間。'}
+  ]}
+];
+const daysEl=document.getElementById('days');
+itinerary.forEach((day,i)=>{
+  const tags={move:'<span class="tag move">交通</span>',food:'<span class="tag food">美食</span>',stay:'<span class="tag stay">住宿</span>'};
+  const lis=day.items.map(it=>{
+    const cls=it.tag==='food'?' class="eat"':'';
+    const t=it.tag?tags[it.tag]||'':'';
+    return `<li${cls}><span class="tm">${it.t}</span> <span class="ti2">${it.ti}</span>${t}<br><span class="ds">${it.ds}</span></li>`;
+  }).join('');
+  const thuMark = day.thu? ' <span class="thu">・週四請看提醒</span>':'';
+  const open = i===0?' open':'';
+  daysEl.insertAdjacentHTML('beforeend',`
+    <div class="day${open}">
+      <div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+        <div class="day-badge" style="background:${day.color}"><span class="d">DAY</span><span class="n">${day.d}</span></div>
+        <div class="day-title"><div class="dt-date">${day.date}${thuMark}</div><div class="dt-sub">${day.sub}</div></div>
+        <span class="chev">▾</span>
+      </div>
+      <div class="day-body"><ul class="tl">${lis}</ul></div>
+    </div>`);
+});
+
+/* ---------- 費用編列 ---------- */
+let rate=0.2;
+const fmt=n=>n.toLocaleString('en-US',{maximumFractionDigits:0});
+const val=x=>(x===null||x===undefined||x==='')?null:Number(x);
+
+const budgetDefaults=[
+  {id:'flight',item:'機票 華航 CI154／CI155（來回・2 人）',date:'7/7・7/10',jpy:null,twd:43384,booked:true,est:false,
+   url:'',note:'去 CI154 台北 07:30→名古屋 11:20；回 CI155 名古屋 12:20→台北 14:30。'},
+  {id:'mawaryanse',item:'超級護照「まわりゃんせ」×2',date:'7/7',jpy:24200,est:false,
+   url:'https://www.kintetsu.co.jp/senden/Railway/Ticket/mawaryanse/',
+   note:'大人 ¥12,100×2。含 23 設施門票、近鐵電車/巴士/船無限搭乘、來回近鐵特急、4 天效期。名古屋站窗口購買。'},
+  {id:'ltdexp1',item:'近鐵特急券 名古屋→賢島 ×2',date:'7/7',jpy:3280,est:false,
+   url:'https://www.ticket.kintetsu.co.jp/vs/ja/T/TZZ/TZZ10.do?op=tDisplayVisitorMenu',
+   note:'<span class="warninline">⚠ まわりゃんせ 已含來回近鐵特急，這張 ¥3,280 很可能重複，付款前請向近鐵確認是否需另購。</span>建議班次 13:10發→15:18著（ビスタカー）。'},
+  {id:'shimakaze',item:'Shimakaze 特急券 鳥羽→名古屋 ×2',date:'7/9',jpy:2320,est:true,
+   url:'https://www.ticket.kintetsu.co.jp/vs/ja/T/TZZ/TZZ10.do?op=tDisplayVisitorMenu',
+   note:'估算（約 ¥1,160×2，以實際為準）。出發日 1 個月前 6/9 台灣時間 09:30 線上搶，只勾特急券のみ；7/9 為週四先確認是否運行；建議班次 16:10發→17:44著。'},
+  {id:'musky1',item:'名鐵 μ-SKY 機場→名古屋 ×2',date:'7/7',jpy:2880,est:true,
+   url:'https://www.meitetsu.co.jp/cht/airport-access/index.html',
+   note:'估算（約 ¥1,440/人含 μ 特別車輛券，實際票價建議自行確認）。車程約 28 分。'},
+  {id:'musky2',item:'名鐵 μ-SKY 名古屋→機場 ×2',date:'7/10',jpy:2880,est:true,
+   url:'https://www.meitetsu.co.jp/cht/airport-access/index.html',
+   note:'估算（同去程，建議自行確認）。回程往中部國際機場。'},
+  {id:'hojoen',item:'賢島寶生苑（1 晚・2 人）',date:'7/7→7/8',jpy:56000,est:false,
+   url:'https://asp.hotel-story.ne.jp/ver3d/planlist.asp?hcod1=01070&hcod2=001&LB01=server7&mode=seek&hidSELECTARRYMD=2026/07/07&hidSELECTHAKSU=1&chkpsn=1&clrmode=seek#planlisttop',
+   note:'華陽棟スーペリアフロア『藍景 RANKEI』純和室。<b>2 食付（含晚餐＋早餐）</b>。可現場現金/刷卡，或 PayPay／線上信用卡事前付。'},
+  {id:'toba',item:'鳥羽國際飯店（1 晚・2 人）',date:'7/8→7/9',jpy:36960,est:false,
+   url:'https://go-iseshima-resort.reservation.jp/en/hotels/tobahotel/rooms?checkin_date=20260708&checkout_date=20260709&adults=2&child1=0&child2=0&child3=0&child4=0&child5=0&children=0&rooms=1&dayuseFlg=0&sort=1&dateUndecidedFlg=0',
+   note:'<b>僅含早餐（自助）</b>。入住 14:00~／退房 ~11:00；飯店付或線上付。岬上，往返鳥羽站需接駁。7/8 晚餐需外食。'},
+  {id:'jr',item:'JR Gate Tower 飯店（1 晚・2 人）',date:'7/9→7/10',jpy:25000,est:false,
+   url:'https://go-jrhotel-m.reservation.jp/en/hotels/gatetower/rooms/10025010?checkin_date=20260709&checkout_date=20260710&adults=2&child1=0&child2=0&child3=0&child4=0&child5=0&children=0&rooms=1&dayuseFlg=0&sort=1&dateUndecidedFlg=0',
+   note:'Simple Stay 基本方案，<b>純住宿不含餐</b>。入住 15:00~／退房 ~11:00；與名古屋站直結。'},
+  {id:'amakoya',item:'海女小屋 海女體驗（75 分）×2',date:'7/9',jpy:17600,est:false,
+   url:'https://amakoya.com/',
+   note:'<span class="warninline">尚未預約，記得訂位。</span>B 課程＋C/D 鮑魚課程，大人 ¥8,800×2。<b>活動時間 7/9 13:15 起、75 分</b>。現烤伊勢龍蝦、鮑魚。'},
+  {id:'cruise',item:'英虞灣西班牙遊覽船（選配）',date:'7/8',jpy:0,est:false,
+   url:'https://shima-marineleisure.com/espana',
+   note:'憑まわりゃんせ <b>免費</b>換票（原價 ¥1,800/人）。約 50 分。屬選配，注意行李寄送截止時間。'},
+  {id:'aquarium',item:'鳥羽水族館',date:'7/9',jpy:0,est:false,
+   url:'https://aquarium.co.jp/',
+   note:'憑まわりゃんせ <b>免費</b>入場（原價 ¥2,800/人）。'},
+  {id:'luggage',item:'行李當日配送 鳥羽站→鳥羽國際',date:'7/8',jpy:null,est:true,
+   url:'',note:'費用、當日配送截止時間、是否含此飯店請先確認後填入。'},
+  {id:'lunch77',item:'名古屋 鰻魚飯 午餐',date:'7/7',jpy:null,est:false,
+   url:'',note:'備長／まるや本店等，現場排隊。自理。'},
+  {id:'meal78',item:'伊勢 托福橫丁 午餐＋小食',date:'7/8',jpy:null,est:false,
+   url:'',note:'豚捨、岡田屋伊勢烏龍、赤福。自理。'},
+  {id:'dinner78',item:'7/8 外食晚餐',date:'7/8',jpy:null,est:false,
+   url:'',note:'鳥羽國際僅含早餐，晚餐需外食（伊勢市區或鳥羽站周邊）。'},
+  {id:'dinner79',item:'名古屋 松阪牛晚餐',date:'7/9',jpy:null,est:false,
+   url:'https://tabelog.com/tw/aichi/A2301/A230101/23089736/',
+   note:'建議事先訂位。自理。'},
+  {id:'bfast710',item:'名古屋 早餐（外食）',date:'7/10',jpy:null,est:false,
+   url:'',note:'JR Gate Tower 不含早餐，車站周邊吃（Pront B1、コメダ珈琲モーニング、喫茶ボン・ヴォヤージュ）。自理。'},
+  {id:'misc',item:'計程車／購物／伴手禮等',date:'—',jpy:null,est:false,
+   url:'',note:'零用、計程車（如海女小屋往返）、伴手禮。'}
+];
+
+let bookedState={};   // {id:true} 已訂狀態
+let budget=[];
+
+function buildBudget(){
+  budget=budgetDefaults.map(d=>Object.assign({},d,{booked:(bookedState[d.id]!==undefined?bookedState[d.id]:!!d.booked)}));
+}
+function saveBooked(){Store.set(K_BOOK,JSON.stringify(bookedState));}
+function rowTwd(r){ return (r.twd!==null&&r.twd!==undefined)?r.twd : ((r.jpy!==null&&r.jpy!==undefined)?Math.round(r.jpy*rate):null); }
+
+const PEOPLE=2;
+function computeTotals(){
+  buildBudget();
+  let est=0;
+  budget.forEach(r=>{const t=rowTwd(r); if(t!==null)est+=t;});
+  document.getElementById('t-grand').textContent='NT$ '+fmt(Math.round(est));
+  document.getElementById('t-per').textContent='NT$ '+fmt(Math.round(est/PEOPLE));
+}
+function moneyCell(v,sym){
+  if(v===null||v===undefined) return '<span style="color:var(--ink-faint)">—</span>';
+  if(v===0) return '<span style="color:var(--ok)">免費</span>';
+  return sym+' '+fmt(v);
+}
+function renderBudget(){
+  buildBudget();
+  const body=document.getElementById('bud-body');
+  body.innerHTML=budget.map(r=>{
+    const link=r.url?`<a class="budlink" href="${r.url}" target="_blank" rel="noopener">開啟 ↗</a>`:'<span style="color:var(--ink-faint);font-size:.8rem">—</span>';
+    const t=rowTwd(r);
+    return `<tr class="${r.est?'est ':''}${r.booked?'booked':''}">
+      <td style="text-align:center"><input class="bk" type="checkbox" data-id="${r.id}" ${r.booked?'checked':''}></td>
+      <td class="it">${r.item}</td>
+      <td class="dt2">${r.date||''}</td>
+      <td class="num">${moneyCell(r.jpy,'¥')}</td>
+      <td class="num">${moneyCell(t,'NT$')}</td>
+      <td>${link}</td>
+      <td class="nt">${r.note||''}</td>
+    </tr>`;
+  }).join('');
+  body.querySelectorAll('.bk').forEach(cb=>cb.addEventListener('change',()=>{bookedState[cb.dataset.id]=cb.checked;saveBooked();renderBudget();}));
+  computeTotals();
+}
+document.getElementById('rate').addEventListener('input',e=>{const v=parseFloat(e.target.value);if(!isNaN(v)&&v>0){rate=v;Store.set(K_RATE,String(rate));renderBudget();}});
+
+function storageNote(){return Store.ok?'✓ 已訂勾選會自動保存於此瀏覽器，下次開啟仍在。':'⚠ 此環境無法自動保存已訂勾選，重新整理會回到預設。';}
+
+/* ---------- 初始載入 ---------- */
+(async function init(){
+  try{const b=await Store.get(K_BOOK);if(b)bookedState=JSON.parse(b);}catch(e){}
+  try{const r=await Store.get(K_RATE);if(r){rate=parseFloat(r);document.getElementById('rate').value=rate;}}catch(e){}
+  renderBudget();
+  document.getElementById('savenote').textContent=storageNote();
+})();
+</script>
+</body>
+</html>
